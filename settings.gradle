@@ -1,0 +1,2 @@
+rootProject.name = 'Android-PubSubMessenger'
+include ':PubSubMessenger', ':test', ':sample'

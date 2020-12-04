@@ -9,10 +9,10 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.coroutineScope
 import kotlinx.coroutines.Job
 
-internal class SubscribeViewModel<T : PubSubMessage>(private val clazz: Class<T>, private val onReceive: (T) -> Unit) :
-    ViewModel(), LifecycleOwner {
+internal class SubscribeViewModel : ViewModel(), LifecycleOwner {
     companion object {
         fun <T : PubSubMessage> subscribeMessage(
             viewModelStoreOwner: ViewModelStoreOwner,
@@ -22,16 +22,19 @@ internal class SubscribeViewModel<T : PubSubMessage>(private val clazz: Class<T>
         ): Job {
             val viewModel = ViewModelProvider(viewModelStoreOwner, object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T = SubscribeViewModel(clazz, onReceive) as T
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T = SubscribeViewModel() as T
             }).get("${clazz.name}-$onReceive", SubscribeViewModel::class.java)
             viewModel.observeLifecycle(lifecycle)
-            return viewModel.job
+            return viewModel.subscribeMessage(clazz, onReceive)
         }
     }
 
     private val lifecycleRegistry = LifecycleRegistry(this)
     override fun getLifecycle(): Lifecycle = lifecycleRegistry
-    private val job get() = PubSubMessenger.subscribeMessage<T>(lifecycle, clazz, onReceive)
+    private fun <T : PubSubMessage> subscribeMessage(clazz: Class<T>, onReceive: (T) -> Unit): Job {
+        return PubSubMessenger.subscribeMessage(lifecycle.coroutineScope, clazz, onReceive)
+    }
+
     private fun observeLifecycle(lifecycle: Lifecycle) {
         when (lifecycle.currentState) {
             Lifecycle.State.INITIALIZED -> Unit
@@ -39,9 +42,7 @@ internal class SubscribeViewModel<T : PubSubMessage>(private val clazz: Class<T>
                 lifecycleRegistry.currentState = Lifecycle.State.CREATED
                 lifecycleRegistry.currentState = Lifecycle.State.DESTROYED
             }
-            else -> {
-                lifecycleRegistry.currentState = lifecycle.currentState
-            }
+            else -> lifecycleRegistry.currentState = lifecycle.currentState
         }
         lifecycle.addObserver(object : LifecycleEventObserver {
             override fun onStateChanged(source: LifecycleOwner, event: Event) {

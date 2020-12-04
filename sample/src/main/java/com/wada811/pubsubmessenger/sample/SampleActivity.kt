@@ -34,6 +34,9 @@ class SampleActivity : AppCompatActivity(R.layout.sample_activity) {
         subscribeMessage<RotateMessage> {
             viewModel.appendLog("Activity::rotated: ${it.requestedOrientation}")
         }
+        subscribeMessage<RotateMessage> {
+            println("subscribeMessage: $it")
+        }
         binding.restartButton.setOnClickListener {
             if (isEnabledDoNotKeepActivities()) {
                 val restartTimeMillis = System.currentTimeMillis()

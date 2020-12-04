@@ -3,7 +3,9 @@ package com.wada811.pubsubmessenger.test
 import android.os.Build
 import androidx.fragment.app.testing.FragmentScenario
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Lifecycle.Event.*
+import androidx.lifecycle.Lifecycle.Event.ON_CREATE
+import androidx.lifecycle.Lifecycle.Event.ON_RESUME
+import androidx.lifecycle.Lifecycle.Event.ON_STOP
 import androidx.test.core.app.ActivityScenario
 import com.google.common.truth.Truth
 import org.junit.Ignore
@@ -92,5 +94,4 @@ class SuspendTest {
         scenario.moveToState(Lifecycle.State.DESTROYED)
         fragment = null
     }
-
 }

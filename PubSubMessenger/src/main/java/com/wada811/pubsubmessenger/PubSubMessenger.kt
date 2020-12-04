@@ -1,51 +1,31 @@
 package com.wada811.pubsubmessenger
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Lifecycle.Event
-import androidx.lifecycle.Lifecycle.Event.ON_DESTROY
-import androidx.lifecycle.Lifecycle.State.DESTROYED
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.coroutineScope
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import androidx.lifecycle.LifecycleCoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.channels.BroadcastChannel
-import kotlinx.coroutines.channels.Channel.Factory.BUFFERED
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
-@OptIn(ExperimentalCoroutinesApi::class)
 internal object PubSubMessenger {
-    private val channel: BroadcastChannel<PubSubMessage> = BroadcastChannel(BUFFERED)
-
+    private val flow: MutableSharedFlow<PubSubMessage> = MutableSharedFlow()
     internal suspend fun publishMessage(message: PubSubMessage) {
-        channel.send(message)
+        flow.emit(message)
     }
 
     internal fun <T : PubSubMessage> subscribeMessage(
-        lifecycle: Lifecycle,
+        coroutineScope: LifecycleCoroutineScope,
         clazz: Class<T>,
         onReceive: (T) -> Unit
     ): Job {
-        val receiveChannel = channel.openSubscription()
-        if (lifecycle.currentState == DESTROYED) {
-            receiveChannel.cancel()
-        } else {
-            lifecycle.addObserver(object : LifecycleEventObserver {
-                override fun onStateChanged(source: LifecycleOwner, event: Event) {
-                    if (event == ON_DESTROY) {
-                        receiveChannel.cancel()
-                    }
-                }
-            })
-        }
-        return lifecycle.coroutineScope.launchWhenStarted {
-            for (message in receiveChannel) {
-                lifecycle.coroutineScope.launchWhenStarted {
-                    if (message::class.java == clazz) {
-                        @Suppress("UNCHECKED_CAST")
-                        onReceive(message as T)
-                    }
+        return flow
+            .filter { clazz.isInstance(it) }
+            .onEach {
+                coroutineScope.launchWhenStarted {
+                    @Suppress("UNCHECKED_CAST")
+                    onReceive(it as T)
                 }
             }
-        }
+            .launchIn(coroutineScope)
     }
 }

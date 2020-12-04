@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.wada811.pubsubmessenger
 
 import androidx.fragment.app.Fragment
@@ -10,7 +12,6 @@ fun <T : PubSubMessage> FragmentActivity.subscribeMessage(clazz: Class<T>, onRec
     return SubscribeViewModel.subscribeMessage(this, lifecycle, clazz, onReceive)
 }
 
-@Suppress("DEPRECATION")
 inline fun <reified T : PubSubMessage> FragmentActivity.subscribeMessage(noinline onReceive: (T) -> Unit): Job {
     return subscribeMessage(T::class.java, onReceive)
 }
@@ -20,7 +21,6 @@ fun <T : PubSubMessage> Fragment.subscribeMessage(clazz: Class<T>, onReceive: (T
     return SubscribeViewModel.subscribeMessage(this, viewLifecycleOrLifecycle, clazz, onReceive)
 }
 
-@Suppress("DEPRECATION")
 inline fun <reified T : PubSubMessage> Fragment.subscribeMessage(noinline onReceive: (T) -> Unit): Job {
     return subscribeMessage(T::class.java, onReceive)
 }

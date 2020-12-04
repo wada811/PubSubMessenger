@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import java.util.concurrent.TimeUnit
 
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         if (intent.action == ACTION_RESTART) {
-            Handler().postDelayed({
+            Handler(Looper.getMainLooper()).postDelayed({
                 startActivity(Intent(this, SampleActivity::class.java).also {
                     it.putExtra(SampleViewModel::log.name, "Log:")
                 })

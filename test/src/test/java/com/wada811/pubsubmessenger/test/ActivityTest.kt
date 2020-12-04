@@ -51,6 +51,7 @@ class ActivityTest(
             parameters.add(arrayOf(listOf(ON_CREATE), listOf(ON_STOP), listOf<Event>())) // publish after ON_STOP
             parameters.add(arrayOf(listOf(ON_CREATE), listOf(ON_DESTROY), listOf<Event>())) // publish after ON_STOP
             parameters.add(arrayOf(listOf(ON_CREATE), listOf(ON_CREATE, ON_CREATE), listOf(ON_CREATE, ON_CREATE)))
+            parameters.add(arrayOf(listOf(ON_CREATE, ON_CREATE), listOf(ON_CREATE), listOf(ON_CREATE, ON_CREATE)))
 
             // subscribe: ON_START
             parameters.add(arrayOf(listOf(ON_START), listOf(ON_CREATE), listOf<Event>())) // publish before subscribe
@@ -60,6 +61,7 @@ class ActivityTest(
             parameters.add(arrayOf(listOf(ON_START), listOf(ON_STOP), listOf<Event>())) // publish after ON_STOP
             parameters.add(arrayOf(listOf(ON_START), listOf(ON_DESTROY), listOf<Event>())) // publish after ON_STOP
             parameters.add(arrayOf(listOf(ON_START), listOf(ON_START, ON_START), listOf(ON_START, ON_START)))
+            parameters.add(arrayOf(listOf(ON_START, ON_START), listOf(ON_START), listOf(ON_START, ON_START)))
 
             // subscribe: ON_RESUME
             parameters.add(arrayOf(listOf(ON_RESUME), listOf(ON_CREATE), listOf<Event>())) // publish before subscribe
@@ -69,6 +71,7 @@ class ActivityTest(
             parameters.add(arrayOf(listOf(ON_RESUME), listOf(ON_STOP), listOf<Event>())) // publish after ON_STOP
             parameters.add(arrayOf(listOf(ON_RESUME), listOf(ON_DESTROY), listOf<Event>())) // publish after ON_STOP
             parameters.add(arrayOf(listOf(ON_RESUME), listOf(ON_RESUME, ON_RESUME), listOf(ON_RESUME, ON_RESUME)))
+            parameters.add(arrayOf(listOf(ON_RESUME, ON_RESUME), listOf(ON_RESUME), listOf(ON_RESUME, ON_RESUME)))
 
             // subscribe: ON_PAUSE
             parameters.add(arrayOf(listOf(ON_PAUSE), listOf(ON_CREATE), listOf<Event>())) // publish before subscribe
@@ -78,6 +81,7 @@ class ActivityTest(
             parameters.add(arrayOf(listOf(ON_PAUSE), listOf(ON_STOP), listOf<Event>())) // publish after ON_STOP
             parameters.add(arrayOf(listOf(ON_PAUSE), listOf(ON_DESTROY), listOf<Event>())) // publish after ON_STOP
             parameters.add(arrayOf(listOf(ON_PAUSE), listOf(ON_PAUSE, ON_PAUSE), listOf(ON_PAUSE, ON_PAUSE)))
+            parameters.add(arrayOf(listOf(ON_PAUSE, ON_PAUSE), listOf(ON_PAUSE), listOf(ON_PAUSE, ON_PAUSE)))
 
             // subscribe: ON_STOP
             parameters.add(arrayOf(listOf(ON_STOP), listOf(ON_CREATE), listOf<Event>())) // subscribe after ON_STOP
@@ -94,7 +98,7 @@ class ActivityTest(
             parameters.add(arrayOf(listOf(ON_DESTROY), listOf(ON_PAUSE), listOf<Event>())) // subscribe after ON_STOP
             parameters.add(arrayOf(listOf(ON_DESTROY), listOf(ON_STOP), listOf<Event>())) // subscribe after ON_STOP
             parameters.add(arrayOf(listOf(ON_DESTROY), listOf(ON_DESTROY), listOf<Event>())) // subscribe after ON_STOP
-            return listOf(*parameters.toTypedArray(), *parameters.toTypedArray())
+            return parameters
         }
     }
 }

@@ -1,13 +1,15 @@
 package com.wada811.pubsubmessenger.sample
 
+import android.app.Application
+import android.content.Context
+import androidx.core.content.edit
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import com.wada811.pubsubmessenger.PubSubMessage
-import com.wada811.viewmodelsavedstate.liveData
 
-class SampleViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
-    val log: MutableLiveData<String> by savedStateHandle.liveData()
+class SampleViewModel(application: Application) : AndroidViewModel(application) {
+    private val pref = application.getSharedPreferences(application.getString(R.string.app_name), Context.MODE_PRIVATE)
+    val log: MutableLiveData<String> = MutableLiveData(pref.getString(::log.name, ""))
 
     init {
         appendLog("ViewModel::init")
@@ -21,6 +23,7 @@ class SampleViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
             log.value = logLines.subList(logLines.size - maxLineCount + 1, logLines.size).joinToString("\n")
         }
         log.value = log.value + "\n$text"
+        pref.edit { putString(::log.name, log.value) }
     }
 
     override fun onCleared() {

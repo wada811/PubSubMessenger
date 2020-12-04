@@ -19,6 +19,13 @@ PubSubMessenger
   - You can publish in ViewModel or Fragment.
   - You can subscribe in Activity or Fragment.
 
+# イベント通知の要件
+- observe 時には通知されない
+- STARTED 以降でイベントをハンドリングする
+- INITIALIZED 以降でイベントを受け付ける
+    - 画面回転中のイベントをハンドリングできる
+    - バックグラウンドでのイベントをハンドリングできる
+- 複数のオブザーバに対応
 
 ## Usage
 ### Define a message

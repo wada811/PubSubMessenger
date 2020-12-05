@@ -1,3 +1,0 @@
-package com.wada811.pubsubmessenger
-
-interface PubSubMessage

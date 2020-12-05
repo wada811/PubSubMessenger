@@ -19,14 +19,6 @@ PubSubMessenger
   - You can publish in ViewModel or Fragment.
   - You can subscribe in Activity or Fragment.
 
-# イベント通知の要件
-- observe 時には通知されない
-- STARTED 以降でイベントをハンドリングする
-- INITIALIZED 以降でイベントを受け付ける
-    - 画面回転中のイベントをハンドリングできる
-    - バックグラウンドでのイベントをハンドリングできる
-- 複数のオブザーバに対応
-
 ## Usage
 ### Define a message
 The message needs to implement `PubSubMessage`.
@@ -35,15 +27,15 @@ class SampleMessage(val param: String): PubSubMessage
 ```
 
 ### Publish a message
-You can call `publishMessage` in ViewModel or Fragment.
+You can call `pubSubMessenger.publish(message)` in ViewModel or Fragment.
 ```kotlin
-publishMessage(SampleMessage("You can pass parameters via the message"))
+pubSubMessenger.publish(SampleMessage("You can pass parameters via the message"))
 ```
 
 ### Subscribe to messages
-You can call `subscribeMessage` in Activity or Fragment.
+You can call `pubSubMessenger.subscribe<PubSubMessage> { }` in Activity or Fragment.
 ```kotlin
-subscribeMessage<SampleMessage> { message ->
+pubSubMessenger.subscribe<SampleMessage> { message ->
     Log.d(TAG, "Receive $message")
 }
 ```

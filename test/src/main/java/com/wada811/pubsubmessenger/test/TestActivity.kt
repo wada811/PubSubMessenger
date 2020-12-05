@@ -11,8 +11,8 @@ import androidx.lifecycle.Lifecycle.Event.ON_PAUSE
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.Lifecycle.Event.ON_STOP
-import com.wada811.pubsubmessenger.publishMessage
-import com.wada811.pubsubmessenger.subscribeMessage
+import com.wada811.pubsubmessenger.messenger.pubSubMessenger
+import com.wada811.pubsubmessenger.subscribe
 
 class TestActivity : FragmentActivity() {
     companion object {
@@ -38,7 +38,7 @@ class TestActivity : FragmentActivity() {
         println("state: ${lifecycle.currentState}, event: $event")
         subscribeWhenLifecycleEvents.filter { it == event }.forEach { _ ->
             println("subscribe: $event")
-            subscribeMessage<TestMessage> {
+            pubSubMessenger.subscribe<TestMessage> {
                 println("lifecycleEvents.add: ${it.lifecycleEvent}")
                 lifecycleEvents.add(it.lifecycleEvent)
             }

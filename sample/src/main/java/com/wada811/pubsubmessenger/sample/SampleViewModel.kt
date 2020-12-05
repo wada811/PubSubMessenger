@@ -6,6 +6,7 @@ import androidx.core.content.edit
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import com.wada811.pubsubmessenger.PubSubMessage
+import com.wada811.pubsubmessenger.messenger.pubSubMessenger
 
 class SampleViewModel(application: Application) : AndroidViewModel(application) {
     private val pref = application.getSharedPreferences(application.getString(R.string.app_name), Context.MODE_PRIVATE)
@@ -13,6 +14,10 @@ class SampleViewModel(application: Application) : AndroidViewModel(application) 
 
     init {
         appendLog("ViewModel::init")
+    }
+
+    fun publishMessage(message: PubSubMessage) {
+        pubSubMessenger.publish(message)
     }
 
     fun appendLog(text: String) {

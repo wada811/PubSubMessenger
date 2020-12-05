@@ -8,11 +8,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.wada811.databinding.dataBinding
 import com.wada811.pubsubmessenger.PubSubMessage
-import com.wada811.pubsubmessenger.publishMessage
+import com.wada811.pubsubmessenger.messenger.pubSubMessenger
 import com.wada811.pubsubmessenger.sample.SampleViewModel.RestartMessage
 import com.wada811.pubsubmessenger.sample.SampleViewModel.RotateMessage
 import com.wada811.pubsubmessenger.sample.databinding.SampleActivityBinding
-import com.wada811.pubsubmessenger.subscribeMessage
+import com.wada811.pubsubmessenger.subscribe
 
 class SampleActivity : AppCompatActivity(R.layout.sample_activity) {
     private val binding: SampleActivityBinding by dataBinding()
@@ -31,10 +31,10 @@ class SampleActivity : AppCompatActivity(R.layout.sample_activity) {
                 else -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
             }
         }
-        subscribeMessage<RotateMessage> {
+        pubSubMessenger.subscribe<RotateMessage> {
             viewModel.appendLog("Activity::rotated: ${it.requestedOrientation}")
         }
-        subscribeMessage<RotateMessage> {
+        pubSubMessenger.subscribe<RotateMessage> {
             println("subscribeMessage: $it")
         }
         binding.restartButton.setOnClickListener {
@@ -47,7 +47,7 @@ class SampleActivity : AppCompatActivity(R.layout.sample_activity) {
                 Toast.makeText(this, "adb shell settings put global always_finish_activities 1", Toast.LENGTH_LONG).show()
             }
         }
-        subscribeMessage<RestartMessage> {
+        pubSubMessenger.subscribe<RestartMessage> {
             viewModel.appendLog("Activity::restart: ${it.restartTimeMillis}, restarted: ${System.currentTimeMillis()}")
         }
     }

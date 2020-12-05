@@ -10,7 +10,7 @@ import androidx.lifecycle.Lifecycle.Event.ON_PAUSE
 import androidx.lifecycle.Lifecycle.Event.ON_RESUME
 import androidx.lifecycle.Lifecycle.Event.ON_START
 import androidx.lifecycle.Lifecycle.Event.ON_STOP
-import com.wada811.pubsubmessenger.publishMessage
+import com.wada811.pubsubmessenger.messenger.pubSubMessenger
 
 class TestDialogFragment : DialogFragment() {
     companion object {
@@ -29,7 +29,7 @@ class TestDialogFragment : DialogFragment() {
         println("state: ${if (view != null) viewLifecycleOwner.lifecycle.currentState else lifecycle.currentState}, event: $event")
         publishWhenLifecycleEvents.filter { it == event }.forEach { _ ->
             println("publish: $event")
-            publishMessage(TestMessage(event))
+            pubSubMessenger.publish(TestMessage(event))
         }
     }
 

@@ -9,32 +9,21 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import androidx.lifecycle.coroutineScope
-import kotlinx.coroutines.Job
 
-internal class SubscribeViewModel : ViewModel(), LifecycleOwner {
+internal class LifecycleViewModel : ViewModel(), LifecycleOwner {
     companion object {
-        fun <T : PubSubMessage> subscribeMessage(
-            viewModelStoreOwner: ViewModelStoreOwner,
-            lifecycle: Lifecycle,
-            clazz: Class<T>,
-            onReceive: (T) -> Unit
-        ): Job {
+        fun get(viewModelStoreOwner: ViewModelStoreOwner, key: String, lifecycle: Lifecycle): LifecycleViewModel {
             val viewModel = ViewModelProvider(viewModelStoreOwner, object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T = SubscribeViewModel() as T
-            }).get("${clazz.name}-$onReceive", SubscribeViewModel::class.java)
+                override fun <T : ViewModel?> create(modelClass: Class<T>): T = LifecycleViewModel() as T
+            }).get(key, LifecycleViewModel::class.java)
             viewModel.observeLifecycle(lifecycle)
-            return viewModel.subscribeMessage(clazz, onReceive)
+            return viewModel
         }
     }
 
     private val lifecycleRegistry = LifecycleRegistry(this)
     override fun getLifecycle(): Lifecycle = lifecycleRegistry
-    private fun <T : PubSubMessage> subscribeMessage(clazz: Class<T>, onReceive: (T) -> Unit): Job {
-        return PubSubMessenger.subscribeMessage(lifecycle.coroutineScope, clazz, onReceive)
-    }
-
     private fun observeLifecycle(lifecycle: Lifecycle) {
         when (lifecycle.currentState) {
             Lifecycle.State.INITIALIZED -> Unit

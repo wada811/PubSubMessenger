@@ -1,11 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.wada811.pubsubmessenger.test">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="false"
-        tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".TestActivity">
+        tools:ignore="DataExtractionRules,GoogleAppIndexingWarning,MissingApplicationIcon">
+        <activity
+            android:name=".TestActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -15,7 +16,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".TestDialogActivity">
+        <activity
+            android:name=".TestDialogActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,7 +28,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name="androidx.fragment.app.testing.FragmentScenario$EmptyFragmentActivity">
+        <activity
+            android:name="androidx.fragment.app.testing.FragmentScenario$EmptyFragmentActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

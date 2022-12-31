@@ -2,10 +2,11 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    namespace "com.wada811.pubsubmessenger.test"
+    compileSdkVersion 33
     defaultConfig {
-        minSdkVersion 16
-        targetSdkVersion 30
+        minSdkVersion 21
+        targetSdkVersion 33
         applicationId "com.wada811.pubsubmessenger.test"
         versionCode 1
         versionName "1.0"
@@ -13,7 +14,7 @@ android {
         consumerProguardFiles 'consumer-rules.pro'
     }
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_11.toString()
     }
     testOptions {
         unitTests.includeAndroidResources = true
@@ -25,20 +26,20 @@ android {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0"
     implementation project(":PubSubMessenger")
-    implementation 'androidx.activity:activity-ktx:1.1.0'
-    implementation 'androidx.fragment:fragment-ktx:1.2.5'
-    debugImplementation 'androidx.fragment:fragment-testing:1.2.5'
+    implementation 'androidx.activity:activity-ktx:1.6.1'
+    implementation 'androidx.fragment:fragment-ktx:1.5.5'
+    debugImplementation 'androidx.fragment:fragment-testing:1.5.5'
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 
-    testImplementation 'androidx.test:core-ktx:1.3.0'
-    testImplementation 'androidx.test.ext:junit-ktx:1.1.2'
-    testImplementation 'org.robolectric:robolectric:4.4'
-    testImplementation "com.google.truth:truth:1.0.1"
+    testImplementation 'androidx.test:core-ktx:1.5.0'
+    testImplementation 'androidx.test.ext:junit-ktx:1.1.4'
+    testImplementation 'org.robolectric:robolectric:4.9.2'
+    testImplementation "com.google.truth:truth:1.1.3"
 
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test:runner:1.5.1'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.4'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'
 }

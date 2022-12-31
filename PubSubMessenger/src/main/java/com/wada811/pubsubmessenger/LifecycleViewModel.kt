@@ -15,14 +15,14 @@ internal class LifecycleViewModel : ViewModel(), LifecycleOwner {
         fun get(viewModelStoreOwner: ViewModelStoreOwner, key: String, lifecycle: Lifecycle): LifecycleViewModel {
             val viewModel = ViewModelProvider(viewModelStoreOwner, object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel?> create(modelClass: Class<T>): T = LifecycleViewModel() as T
-            }).get(key, LifecycleViewModel::class.java)
+                override fun <T : ViewModel> create(modelClass: Class<T>): T = LifecycleViewModel() as T
+            })[key, LifecycleViewModel::class.java]
             viewModel.observeLifecycle(lifecycle)
             return viewModel
         }
     }
 
-    private val lifecycleRegistry = LifecycleRegistry(this)
+    private val lifecycleRegistry by lazy { LifecycleRegistry(this) }
     override fun getLifecycle(): Lifecycle = lifecycleRegistry
     private fun observeLifecycle(lifecycle: Lifecycle) {
         when (lifecycle.currentState) {

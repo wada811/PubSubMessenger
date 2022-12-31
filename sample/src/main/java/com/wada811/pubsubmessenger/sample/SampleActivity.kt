@@ -6,7 +6,7 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.wada811.databinding.dataBinding
+import com.wada811.databindingktx.dataBinding
 import com.wada811.pubsubmessenger.PubSubMessage
 import com.wada811.pubsubmessenger.messenger.pubSubMessenger
 import com.wada811.pubsubmessenger.sample.SampleViewModel.RestartMessage

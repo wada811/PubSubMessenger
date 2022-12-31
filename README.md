@@ -42,15 +42,15 @@ pubSubMessenger.subscribe<SampleMessage> { message ->
 
 ## Gradle
 
-[![](https://jitpack.io/v/wada811/PubSubMessenger.svg)](https://jitpack.io/#wada811/PubSubMessenger)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.wada811.pubsubmessenger/pubsubmessenger/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.wada811.pubsubmessenger/pubsubmessenger)
 
 ```groovy
 repositories {
-    maven { url "https://jitpack.io" }
+    mavenCentral()
 }
 
 dependencies {
-    implementation 'com.github.wada811:PubSubMessenger:x.y.z'
+    implementation 'com.wada811.pubsubmessenger:pubsubmessenger:x.y.z'
 }
 ```
 

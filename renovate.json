@@ -16,6 +16,12 @@
       "matchPackagePatterns": [
         "^org\\.jetbrains\\.kotlin"
       ]
+    },
+    {
+      "groupName": "androidx.lifecycle",
+      "matchPackagePatterns": [
+        "^androidx\\.lifecycle"
+      ]
     }
   ]
 }
